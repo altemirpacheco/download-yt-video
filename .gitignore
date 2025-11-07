@@ -1,0 +1,21 @@
+# Downloaded video and audio files
+*.mp4
+*.mp3
+*.webm
+*.mkv
+*.m4a
+*.opus
+*.flac
+*.wav
+*.avi
+*.mov
+*.wmv
+*.flv
+
+# Temporary files
+*.part
+*.ytdl
+*.temp
+
+# Downloaded files directory (if created)
+downloads/
