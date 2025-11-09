@@ -4,6 +4,12 @@
 
 ---
 
+## Run:
+
+```sh
+chmod +x download-video.sh
+```
+
 ## ✨ Features
 - Lists all available formats (video and audio)
 - Interactive menu with 4 options:
