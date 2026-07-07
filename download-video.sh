@@ -24,6 +24,14 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Forca clientes mais estaveis para evitar o erro
+# "The following content is not available on this app"
+YTDLP_EXTRACTOR_ARGS="youtube:player_client=android,web"
+
+run_yt_dlp() {
+    yt-dlp --extractor-args "$YTDLP_EXTRACTOR_ARGS" "$@"
+}
+
 # Verifica se yt-dlp está instalado
 if ! command -v yt-dlp &> /dev/null; then
     echo -e "${RED}Erro: yt-dlp não está instalado.${NC}"
@@ -54,9 +62,7 @@ fi
 echo -e "${GREEN}Buscando formatos disponíveis...${NC}\n"
 
 # Lista formatos disponíveis
-yt-dlp -F "$URL"
-
-if [ $? -ne 0 ]; then
+if ! run_yt_dlp -F "$URL"; then
     echo -e "${RED}Erro ao buscar formatos. Verifique a URL.${NC}"
     exit 1
 fi
@@ -74,7 +80,7 @@ read -p "Escolha uma opção [1-4]: " OPTION
 case $OPTION in
     1)
         echo -e "${GREEN}Baixando melhor qualidade...${NC}"
-        yt-dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 "$URL"
+        run_yt_dlp -f "bestvideo+bestaudio/best" --merge-output-format mp4 "$URL"
         ;;
     2)
         echo -e "\n${BLUE}Digite o ID do formato de VÍDEO desejado:${NC}"
@@ -89,15 +95,15 @@ case $OPTION in
         fi
         
         echo -e "${GREEN}Baixando formato ${VIDEO_FORMAT}+${AUDIO_FORMAT}...${NC}"
-        yt-dlp -f "${VIDEO_FORMAT}+${AUDIO_FORMAT}" --merge-output-format mp4 "$URL"
+        run_yt_dlp -f "${VIDEO_FORMAT}+${AUDIO_FORMAT}" --merge-output-format mp4 "$URL"
         ;;
     3)
         echo -e "${GREEN}Baixando apenas áudio (melhor qualidade)...${NC}"
-        yt-dlp -f "bestaudio" -x --audio-format mp3 "$URL"
+        run_yt_dlp -f "bestaudio" -x --audio-format mp3 "$URL"
         ;;
     4)
         echo -e "${GREEN}Baixando apenas vídeo (melhor qualidade)...${NC}"
-        yt-dlp -f "bestvideo" "$URL"
+        run_yt_dlp -f "bestvideo" "$URL"
         ;;
     *)
         echo -e "${RED}Opção inválida.${NC}"

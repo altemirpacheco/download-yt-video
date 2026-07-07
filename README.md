@@ -28,4 +28,19 @@ chmod +x download-video.sh
 - **yt-dlp** (to install: `pip install yt-dlp`)  
 - **ffmpeg** (to install: `sudo apt install ffmpeg`)
 
+## ⚠️ YouTube app/client error fix
+Some videos can fail with this message:
+
+`The following content is not available on this app`
+
+This script already forces compatible YouTube clients via:
+
+`--extractor-args "youtube:player_client=android,web"`
+
+If the video still has restricted formats, update yt-dlp:
+
+```sh
+yt-dlp -U
+```
+
 
